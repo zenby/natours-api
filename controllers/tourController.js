@@ -4,6 +4,18 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
+exports.checkId = (req, res, next, val) => {
+  const findedTour = tours.find(tour => tour.id === Number(val));
+
+  if (!findedTour) {
+    return res.status(403).send({
+      status: 'error',
+      data: { error: 'Invalid ID' }
+    });
+  }
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   res.status(200).send({
     status: 'success',
@@ -16,64 +28,43 @@ exports.updateTour = (req, res) => {
   const findedTour = tours.find(tour => tour.id === id);
   Object.assign(findedTour, req.body);
 
-  if (findedTour) {
-    fs.writeFile(
-      `${__dirname}/../dev-data/data/tours-simple.json`,
-      JSON.stringify(tours),
-      err => {
-        res.status(200).send({
-          status: 'success',
-          data: { tour: findedTour }
-        });
-      }
-    );
-  } else {
-    res.status(403).send({
-      status: 'error',
-      data: { error: 'Invalid ID' }
-    });
-  }
+  fs.writeFile(
+    `${__dirname}/../dev-data/data/tours-simple.json`,
+    JSON.stringify(tours),
+    err => {
+      res.status(200).send({
+        status: 'success',
+        data: { tour: findedTour }
+      });
+    }
+  );
 };
 
 exports.deleteTour = (req, res) => {
   const id = Number(req.params.id);
   const toursIndex = tours.findIndex(tour => tour.id === id);
 
-  if (toursIndex >= 0) {
-    tours.splice(toursIndex, 1);
-    fs.writeFile(
-      `${__dirname}/../dev-data/data/tours-simple.json`,
-      JSON.stringify(tours),
-      err => {
-        res.status(204).send({
-          status: 'success',
-          data: { tour: null }
-        });
-      }
-    );
-  } else {
-    res.status(403).send({
-      status: 'error',
-      data: { error: 'Invalid ID' }
-    });
-  }
+  tours.splice(toursIndex, 1);
+  fs.writeFile(
+    `${__dirname}/../dev-data/data/tours-simple.json`,
+    JSON.stringify(tours),
+    err => {
+      res.status(204).send({
+        status: 'success',
+        data: { tour: null }
+      });
+    }
+  );
 };
 
 exports.getTour = (req, res) => {
   const id = Number(req.params.id);
   const findedTour = tours.find(tour => tour.id === id);
 
-  if (findedTour) {
-    res.status(200).send({
-      status: 'success',
-      data: { tour: findedTour }
-    });
-  } else {
-    res.status(403).send({
-      status: 'error',
-      data: { error: 'Invalid ID' }
-    });
-  }
+  res.status(200).send({
+    status: 'success',
+    data: { tour: findedTour }
+  });
 };
 
 exports.createTour = (req, res) => {
