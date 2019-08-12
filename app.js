@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
 
@@ -7,6 +8,7 @@ app.get('/', (req, res) => {
   res.status(200).send('hello');
 });
 
+app.use(morgan('dev'));
 app.use(express.json());
 
 const tours = JSON.parse(
