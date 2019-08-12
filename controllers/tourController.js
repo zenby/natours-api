@@ -16,6 +16,16 @@ exports.checkId = (req, res, next, val) => {
   next();
 };
 
+exports.checkBody = (req, res, next) => {
+  if (!Object.keys(req.body).length) {
+    return res.status(400).send({
+      status: 'error',
+      data: { error: 'No data passed' }
+    });
+  }
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   res.status(200).send({
     status: 'success',
