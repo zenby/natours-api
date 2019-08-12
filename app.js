@@ -106,16 +106,64 @@ const createTour = (req, res) => {
   );
 };
 
-app
-  .route('/api/v1/tours')
+const getAllUsers = (req, res) => {
+  res.status(500).send({
+    status: 'error',
+    message: 'this route is not implemented'
+  });
+};
+const createUser = (req, res) => {
+  res.status(500).send({
+    status: 'error',
+    message: 'this route is not implemented'
+  });
+};
+const updateUser = (req, res) => {
+  res.status(500).send({
+    status: 'error',
+    message: 'this route is not implemented'
+  });
+};
+const deleteUser = (req, res) => {
+  res.status(500).send({
+    status: 'error',
+    message: 'this route is not implemented'
+  });
+};
+const getUser = (req, res) => {
+  res.status(500).send({
+    status: 'error',
+    message: 'this route is not implemented'
+  });
+};
+
+const tourRouter = express.Router();
+const userRouter = express.Router();
+
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
+
+tourRouter
+  .route('/')
   .get(getAllTours)
   .post(createTour);
 
-app
-  .route('/api/v1/tours/:id')
+tourRouter
+  .route('/:id')
   .get(getTour)
   .delete(deleteTour)
   .patch(updateTour);
+
+userRouter
+  .route('/')
+  .get(getAllUsers)
+  .post(createUser);
+
+userRouter
+  .route('/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 const port = 3000;
 app.listen(port, () => {
