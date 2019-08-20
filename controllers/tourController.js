@@ -52,10 +52,10 @@ exports.deleteTour = async (req, res) => {
 exports.getTour = async (req, res) => {
   try {
     // Tour.findOne({ _id: req.params.id });
-    const tour = await Tour.findById(req.params.id);
+    await Tour.findById(req.params.id);
     res.status(200).json({
       status: 'success',
-      data: { tour: tour }
+      data: null
     });
   } catch (e) {
     res.status(404).json({
